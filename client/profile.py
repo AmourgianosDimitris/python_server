@@ -1,6 +1,6 @@
 import os
 import pickle
-from data import Operators
+import data
 
 class Profile:
     def __init__(self):
