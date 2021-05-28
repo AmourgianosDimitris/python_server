@@ -18,26 +18,33 @@ def get_date():
     return random_date
 
 def bydate():
-    f = open('data.json')
+    f = open('json_files/data.json')
     data = json.load(f)
     f.close()
 
     list = []
 
+    reps = 0
     for i in data:
-        # print ("================================")
+
         dict= {}
         id = i['ID']
         sum = i['Sum']
-        # print ('Sum:', sum)
 
         while sum >= 0:
+            if sum == 0:
+                break
+
+            reps = reps + 1
+            
             total = random.randint(0, 20)
+            if total == 0:
+                break
 
             if sum > total:
-                # print (total, get_date())
+
                 dict = {
-                    'ID': i['ID'],
+                    'ID': reps,
                     'Parking_ID': i['ID'],
                     'Parking_Date': str(get_date()),
                     'Total': total
@@ -46,26 +53,25 @@ def bydate():
                 sum = sum - total
             else:
                 if sum < total:
-                    # print (sum, get_date())
+
                     dict = {
-                        'ID': i['ID'],
+                        'ID': reps,
                         'Parking_ID': i['ID'],
                         'Parking_Date': str(get_date()),
                         'Total': sum
                     }
                     list.append(dict)
                     break
-                if sum == 0:
-                    break
-        # print ("================================")
-    with open( f'bydate.json', 'w') as h:
+
+
+    with open( f'json_files/bydate.json', 'w') as h:
         json.dump(list, h)
         h.close()
 
 def bymonth():
     months = ['January', ' February', ' March', ' April', ' May', ' June', ' July', ' August', ' September', ' October', ' November', ' December']
 
-    f = open('data.json')
+    f = open('json_files/data.json')
     data = json.load(f)
     f.close()
 
@@ -129,14 +135,15 @@ def bymonth():
         }
         list.append(dict)
 
-    with open( f'bymonth.json', 'w') as h:
+    with open( f'json_files/bymonth.json', 'w') as h:
         json.dump(list, h)
         h.close()
 
 
 def bytimezone():
     tz = ['Morning', 'Noon', 'Afternoon', 'Night']
-    f = open('data.json')
+
+    f = open('json_files/data.json')
     data = json.load(f)
     f.close()
 
@@ -168,12 +175,12 @@ def bytimezone():
         }
         list.append(dict)
 
-    with open( f'bytimezone.json', 'w') as h:
+    with open( f'json_files/bytimezone.json', 'w') as h:
         json.dump(list, h)
         h.close()
 
 def main_table():
-    f = open('MOCK_DATA.json')
+    f = open('json_files/MOCK_DATA.json')
     data = json.load(f)
     f.close()
 
@@ -185,7 +192,7 @@ def main_table():
         print (area, sum)
         # print(i['Street'])
 
-    with open( f'data.json', 'w') as h:
+    with open( f'json_files/data.json', 'w') as h:
         json.dump(data, h)
         h.close()
 
