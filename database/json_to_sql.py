@@ -1,6 +1,27 @@
 import os
 import json
 
+def bytype():
+    f = open('json_files/bytype.json')
+    data = json.load(f)
+    f.close()
+
+    insert_into = []
+
+    for item in data:
+        keys = []
+        values = []
+        for key, value in item.items() :
+            keys.append(key)
+            values.append(value)
+        sql_command = f"INSERT INTO Dates ({keys[0]}, {keys[1]}, {keys[2]}, {keys[3]}) VALUES ({values[0]}, {values[1]}, '{values[2]}', '{values[3]}');\n"
+        insert_into.append(sql_command)
+
+    with open('sql_files/types.sql', 'w') as file:
+        for item in insert_into:
+            file.write(item)
+        file.close()
+
 def bydate():
     f = open('json_files/bydate.json')
     data = json.load(f)
@@ -94,7 +115,8 @@ def main_table():
             file.write(item)
         file.close()
 
-main_table()
-bytimezone()
-bymonth()
-bydate()
+# main_table()
+# bytimezone()
+# bymonth()
+# bydate()
+bytype()

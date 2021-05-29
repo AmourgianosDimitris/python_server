@@ -19,3 +19,11 @@ class Db_Operators:
         my_data = pd.read_sql("SHOW tables;", self.mydb)
         print (my_data)
         return my_data
+
+    def show_parking_slots(self):
+        my_data = pd.read_sql("Select * From Parking_Slots;", self.mydb)
+        print (my_data)
+
+    def show_dates(self):
+        my_data = pd.read_sql("Select * From Dates;", self.mydb)
+        print (my_data)
