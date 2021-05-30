@@ -14,7 +14,7 @@ def bytype():
         for key, value in item.items() :
             keys.append(key)
             values.append(value)
-        sql_command = f"INSERT INTO Dates ({keys[0]}, {keys[1]}, {keys[2]}, {keys[3]}) VALUES ({values[0]}, {values[1]}, '{values[2]}', '{values[3]}');\n"
+        sql_command = f"INSERT INTO Types ({keys[0]}, {keys[1]}, {keys[2]}, {keys[3]}) VALUES ({values[0]}, {values[1]}, '{values[2]}', '{values[3]}');\n"
         insert_into.append(sql_command)
 
     with open('sql_files/types.sql', 'w') as file:

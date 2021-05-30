@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS Months;
+DROP TABLE IF EXISTS Timezone;
 
-CREATE TABLE Months (
+CREATE TABLE Timezone (
   ID int NOT NULL,
   Parking_ID int NOT NULL,
   Morning int NOT NULL,
