@@ -16,18 +16,18 @@ class ClientThread(Thread):
         self.db = db
         # self.logs = Logs()
 
-        op_log("Client Connected", True)
-        info(f"Client: {self.ip}:{self.port}\n")
+        op_log("Connected", "Client", True)
+        info("Client:", f"{self.ip}:{self.port}\n")
 
     def run(self):
         while True :
-            op_log("Waiting for Request")
+            op_log("Waiting", "for Request")
 
             data = self.conn.recv(2048)
-            op_log("Reicived Request", True)
+            op_log("Reicived", "Request", True)
 
 
-            resp = self.db.show_db()
+            resp = self.db.show_parking_slots()
 
             # jsonResult = {resp}
             # print(jsonResult['response'])
