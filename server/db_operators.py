@@ -1,5 +1,6 @@
 import mysql.connector
 import pandas as pd
+import random
 
 class Db_Operators:
     def __init__(self):
@@ -12,24 +13,25 @@ class Db_Operators:
 
         self.mycursor = self.mydb.cursor()
 
-    def show_db(self):
-        my_data = pd.read_sql("SHOW databases;", self.mydb)
-        print (my_data)
-        return my_data
+    def get_types(self, tps):
+        lst = {}
+        # for x in tps:
+        #     if len(lst) == 0:
 
-    def show_table(self):
-        my_data = pd.read_sql("SHOW tables;", self.mydb)
-        print (my_data)
-        return my_data
+    def get_nearest(self):
 
-    def show_parking_slots(self):
-        self.mycursor.execute("Select ID, Street, Free, Area, Sum From Parking_Slots;")
-        for x in self.mycursor.fetchall():
-            print (x[0], x[1], x[2], x[3], x[4])
+        sql1 = f'Select * From Parking_Slots WHERE Free=False'
+        self.mycursor.execute(sql1)
+        near = self.mycursor.fetchall()
 
-    def show_dates(self):
-        my_data = pd.read_sql("Select * From Dates;", self.mydb)
-        print (my_data)
+        slots = {}
+
+        rng = random.randrange(5, 20)
+        print (rng)
+        for i in range(random.randrange(5, 20)):
+            slots[i] = near[random.randint(0, len(near)-1)]
+
+        print (slots)
 
     def get_details(self, p_id):
 
@@ -45,31 +47,39 @@ class Db_Operators:
         self.mycursor.execute(sql2)
         tmzn = self.mycursor.fetchall()
 
-        a = str((mnths[0][1]/sum[0][0])*100)[:5] + "%"
-        print (a)
+        sql3 = f'Select Type From Types WHERE Parking_ID={p_id}'
+        self.mycursor.execute(sql3)
+        tps = self.mycursor.fetchall()
 
-        details = {
 
-            'months': {
-                'January': str((mnths[0][2])/sum[0][0]*100)[:5] + "%",
-                'February': str((mnths[0][3]/sum[0][0])*100)[:5] + "%",
-                'March': str((mnths[0][4]/sum[0][0])*100)[:5] + "%",
-                'April': str((mnths[0][5]/sum[0][0])*100)[:5] + "%",
-                'May': str((mnths[0][6]/sum[0][0])*100)[:5] + "%",
-                'June': str((mnths[0][7]/sum[0][0])*100)[:5] + "%",
-                'July': str((mnths[0][8]/sum[0][0])*100)[:5] + "%",
-                'August': str((mnths[0][9]/sum[0][0])*100)[:5] + "%",
-                'September': str((mnths[0][10]/sum[0][0])*100)[:5] + "%",
-                'October': str((mnths[0][11]/sum[0][0])*100)[:5] + "%",
-                'November': str((mnths[0][12]/sum[0][0])*100)[:5] + "%",
-                'December': str((mnths[0][13]/sum[0][0])*100)[:5] + "%"},
+        # print (tps[0][0])
 
-            'timezone': {
-                'Morning': str((tmzn[0][2])/sum[0][0]*100)[:5] + "%",
-                'Noon': str((tmzn[0][3]/sum[0][0])*100)[:5] + "%",
-                'Afternoon': str((tmzn[0][4]/sum[0][0])*100)[:5] + "%",
-                'Night': str((tmzn[0][5]/sum[0][0])*100)[:5] + "%",
-            }
-        }
-
-        print (details)
+        #
+        # details = {
+        #
+        #     'months': {
+        #         'January': str((mnths[0][2])/sum[0][0]*100)[:5] + "%",
+        #         'February': str((mnths[0][3]/sum[0][0])*100)[:5] + "%",
+        #         'March': str((mnths[0][4]/sum[0][0])*100)[:5] + "%",
+        #         'April': str((mnths[0][5]/sum[0][0])*100)[:5] + "%",
+        #         'May': str((mnths[0][6]/sum[0][0])*100)[:5] + "%",
+        #         'June': str((mnths[0][7]/sum[0][0])*100)[:5] + "%",
+        #         'July': str((mnths[0][8]/sum[0][0])*100)[:5] + "%",
+        #         'August': str((mnths[0][9]/sum[0][0])*100)[:5] + "%",
+        #         'September': str((mnths[0][10]/sum[0][0])*100)[:5] + "%",
+        #         'October': str((mnths[0][11]/sum[0][0])*100)[:5] + "%",
+        #         'November': str((mnths[0][12]/sum[0][0])*100)[:5] + "%",
+        #         'December': str((mnths[0][13]/sum[0][0])*100)[:5] + "%"},
+        #
+        #     'timezone': {
+        #         'Morning': str((tmzn[0][2])/sum[0][0]*100)[:5] + "%",
+        #         'Noon': str((tmzn[0][3]/sum[0][0])*100)[:5] + "%",
+        #         'Afternoon': str((tmzn[0][4]/sum[0][0])*100)[:5] + "%",
+        #         'Night': str((tmzn[0][5]/sum[0][0])*100)[:5] + "%"},
+        #
+        #     'types': {
+        #
+        #     }
+        # }
+        #
+        # print (details)
