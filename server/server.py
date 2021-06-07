@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import socket
-import pickle
+import json
 from threading import Thread
 from socketserver import ThreadingMixIn
 from db_operators import Db_Operators

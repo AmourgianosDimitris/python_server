@@ -44,7 +44,24 @@ class Db_Operators:
         for x in slots:
             print (slots[x])
 
-    def park_action(self, p_id):
+    def get_timezone(self, current_day):
+        '''
+        Morning   -> 6:00-12:00,  Noon  -> 12:00-17:00
+        Afternoon -> 17:00-22:00, Night -> 22:00-6:00
+        '''
+
+        time = int(current_day.strftime("%H"))
+
+        if 6 <= int(time) <= 12:
+            return 'Morning'
+        elif 12 <= int(time) <= 17:
+            return 'Noon'
+        elif 17 <= int(time) <= 22:
+            return 'Afternoon'
+        else:
+            return 'Night'
+
+    def park_action(self, p_id, type):
         current_day = datetime.now()
         today = current_day.strftime("%Y-%m-%d")
         print (f'\ntoday: {today}')
@@ -53,27 +70,21 @@ class Db_Operators:
         time = current_day.strftime("%H:%M:%S")
         print (f'time: {time}\n')
 
-        # park = self.query_db(f'UPDATE Parking_Slots SET Free = true WHERE ID={p_id}', True)
-        # park_sum = self.query_db(f'UPDATE Parking_Slots SET Sum = Sum + 1 WHERE ID={p_id}', True)
+        park = self.query_db(f'UPDATE Parking_Slots SET Free = true WHERE ID={p_id}', True)
+        park_sum = self.query_db(f'UPDATE Parking_Slots SET Sum = Sum + 1 WHERE ID={p_id}', True)
 
         exists = self.query_db(f'Select COUNT(1) From Dates WHERE Parking_ID={p_id} AND Parking_Date={today}')
-        print (f'exists: {exists[0][0]}')
-
+        
         types = self.query_db(f'Select COUNT(1) From Types WHERE Parking_ID={p_id} AND Parking_Date={today}')
-        print (f'types: {types[0][0]}')
 
         months = self.query_db(f'Select COUNT(1) From Months WHERE Parking_ID={p_id}')
-        print (f'months: {months[0][0]}')
         if months[0][0] == 1:
-            print (self.query_db(f'Select {month} From Months WHERE Parking_ID={p_id}')[0][0])
             self.query_db(f'UPDATE Months SET {month} = {month} + 1 WHERE Parking_ID={p_id}', True)
-            print (self.query_db(f'Select {month} From Months WHERE Parking_ID={p_id}')[0][0])
-
-        else:
-            print (False)
 
         timezone = self.query_db(f'Select COUNT(1) From Timezone WHERE Parking_ID={p_id}')
-        print (f'timezone: {timezone[0][0]}\n')
+        if timezone[0][0] == 1:
+            current_timezone = self.get_timezone(current_day)
+            self.query_db(f'UPDATE Timezone SET {current_timezone} = {current_timezone} + 1 WHERE Parking_ID={p_id}', True)
 
     def unpark_action(self, p_id):
         unpark = self.query_db(f'UPDATE Parking_Slots SET Free = 0 WHERE ID={p_id}', True)
